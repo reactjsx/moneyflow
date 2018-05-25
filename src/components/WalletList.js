@@ -141,6 +141,18 @@ class WalletList extends Component {
               />
             </div>
             <div className='item'>
+              <Link
+                to={`/reports`}
+              >
+                <Button
+                  circular
+                  color='blue'
+                >
+                  Report
+                </Button>
+              </Link>
+            </div>
+            <div className='item'>
               <Button
                 circular
                 color='red'
@@ -243,7 +255,7 @@ class WalletList extends Component {
                   onTrashClick={this.handleTrashClick}
                   onUpdateTransactionClick={this.handleUpdateTransactionClick}
                 />
-                </Segment>
+              </Segment>
               );
             }}
           />

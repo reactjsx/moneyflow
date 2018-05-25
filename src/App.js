@@ -4,6 +4,7 @@ import { Header, Icon } from 'semantic-ui-react';
 import WalletList from './components/WalletList';
 import SignUp from './components/SignUp';
 import SignIn from './components/SignIn';
+import Report from './components/Report';
 
 const App = () => (
   <div className='ui container'>
@@ -13,6 +14,7 @@ const App = () => (
     <Route path='/signin' component={ SignIn } />
     <Route path='/signup' component={ SignUp } />
     <Route path='/wallets' component={ WalletList } />
+    <Route path='/reports' component={ Report } />
     <Route exact path='/' render={() => (
       <Redirect
         to='/wallets'
@@ -20,6 +22,6 @@ const App = () => (
     )}
     />
   </div>
-)
+);
 
 export default App;
