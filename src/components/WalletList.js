@@ -32,10 +32,15 @@ class WalletList extends Component {
       } else {
         this.setState({ nickname: res.nickname });
       }
-    }).then(() => getTransactions(data => {
-      this.setState({ wallets: data.wallets });
-    }))
+    })
+      .then(() => this.setTransactions())
       .catch(e => console.error(e));
+  }
+  
+  setTransactions = () => {
+    getTransactions(data => {
+      this.setState({ wallets: data.wallets });
+    });
   }
   
   handleAddWalletClick = (wallet) => {
@@ -47,9 +52,7 @@ class WalletList extends Component {
           throw new Error('Response Error');
         }
       })
-      .then(() => getTransactions(wallets => {
-        this.setState({ wallets });
-      }))
+      .then(() => this.setTransactions())
       .then(() => this.forceUpdate())
       .catch((e) => console.error(e));
   }
@@ -63,9 +66,7 @@ class WalletList extends Component {
           throw new Error('Response Error');
         }
       })
-      .then(() => getTransactions(wallets => {
-        this.setState({ wallets });
-      }))
+      .then(() => this.setTransactions())
       .then(() => this.forceUpdate())
       .catch((e) => console.error(e));
   }
@@ -79,9 +80,7 @@ class WalletList extends Component {
           throw new Error('Response Error');
         }
       })
-      .then(() => getTransactions(wallets => {
-        this.setState({ wallets });
-      }))
+      .then(() => this.setTransactions())
       .then(() => this.forceUpdate())
       .catch((e) => console.error(e));
   }
@@ -95,9 +94,7 @@ class WalletList extends Component {
           throw new Error('Response Error');
         }
       })
-      .then(() => getTransactions(wallets => {
-        this.setState({ wallets });
-      }))
+      .then(() => this.setTransactions())
       .then(() => this.forceUpdate());
   }
   
