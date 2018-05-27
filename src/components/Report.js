@@ -5,7 +5,7 @@ import { getTransactions, isSignedIn, getCurrentDate } from '../utils/helper';
 import currencies from '../common/currencies';
 import months from '../common/months';
 
-class WalletList extends Component {
+class Report extends Component {
   state = {
     redirectSignIn: false,
     wallets: [],
@@ -82,10 +82,17 @@ class WalletList extends Component {
             const monthString = months.filter(m => m.value === Number(match.params.month))[0].code;
             const outcomeCategory = Object.keys(totalOutcome);
             const displayOutcome = outcomeCategory.map(category => (
-              <Grid.Row columns={1} key={category} >
-                <Header size='small' textAlign='center' >
-                  {category}: {currencyCode} {totalOutcome[category].reduce((a, b) => a + b, 0)}
-                </Header>
+              <Grid.Row columns={2} key={category} >
+                <Grid.Column>
+                  <Header size='small' textAlign='right' >
+                    {category}
+                  </Header>
+                </Grid.Column>
+                <Grid.Column>
+                  <Header size='small' textAlign='left' >
+                    {currencyCode} {totalOutcome[category].reduce((a, b) => a + b, 0)}
+                  </Header>
+                </Grid.Column>
                 { budgets[category] && <Progress percent={50} color='green' label={totalOutcome[category].reduce((a, b) => a + b, 0)} /> }
               </Grid.Row>
             ));
@@ -153,4 +160,4 @@ class WalletList extends Component {
   }
 }
 
-export default WalletList;
+export default Report;
