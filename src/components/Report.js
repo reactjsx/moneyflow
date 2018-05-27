@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Route, NavLink, Link, Redirect } from 'react-router-dom';
-import { Button, Segment, Header, Progress, Divider, Grid } from 'semantic-ui-react';
+import { Route, Link, Redirect } from 'react-router-dom';
+import { Button, Segment, Header, Progress, Icon, Grid } from 'semantic-ui-react';
 import { getTransactions, isSignedIn, getCurrentDate } from '../utils/helper';
 import currencies from '../common/currencies';
 import months from '../common/months';
@@ -8,6 +8,7 @@ import months from '../common/months';
 class Report extends Component {
   state = {
     redirectSignIn: false,
+    displayCurrency: 'jp',
     wallets: [],
     budgets: []
   }
@@ -35,6 +36,10 @@ class Report extends Component {
       .catch(e => console.error(e));
   }
   
+  setDisplayCurrency = (displayCurrency) => {
+    this.setState({ displayCurrency });
+  }
+  
   render() {
     if (this.state.redirectSignIn) {
       return (
@@ -57,7 +62,7 @@ class Report extends Component {
               b.year === Number(match.params.year)  && b.month === Number(match.params.month)
             ));
             this.state.wallets.forEach(wallet => {
-              if (wallet.currency !== 'jp') return;
+              if (wallet.currency !== this.state.displayCurrency) return;
               
               const thisWalletTransactions = wallet.transactions.filter(t => (
                 t.year === Number(match.params.year)  && t.month === Number(match.params.month)
@@ -78,7 +83,7 @@ class Report extends Component {
                 }
               });
             });
-            const currencyCode = currencies.filter(c => c.value === 'jp')[0].code;
+            const currencyCode = currencies.filter(c => c.value === this.state.displayCurrency)[0].code;
             const monthString = months.filter(m => m.value === Number(match.params.month))[0].code;
             const outcomeCategory = Object.keys(totalOutcome);
             const displayOutcome = outcomeCategory.map(category => (
@@ -139,6 +144,34 @@ class Report extends Component {
                           Next
                         </Button>
                       </Link>
+                    </Grid.Column>
+                  </Grid.Row>
+                  <Grid.Row columns={3}>
+                    <Grid.Column>
+                    </Grid.Column>
+                    <Grid.Column>
+                      <Button basic circular icon
+                        onClick={() => this.setDisplayCurrency('jp')}
+                      >
+                        <i style={{ margin: 0 }} className='jp flag' />
+                      </Button>
+                      <Button basic circular icon
+                        onClick={() => this.setDisplayCurrency('tw')}
+                      >
+                        <i style={{ margin: 0 }} className='tw flag' />
+                      </Button>
+                      <Button basic circular icon
+                        onClick={() => this.setDisplayCurrency('us')}
+                      >
+                        <i style={{ margin: 0 }} className='us flag' />
+                      </Button>
+                      <Button basic circular icon
+                        onClick={() => this.setDisplayCurrency('vn')}
+                      >
+                        <i style={{ margin: 0 }} className='vn flag' />
+                      </Button>
+                    </Grid.Column>
+                    <Grid.Column>
                     </Grid.Column>
                   </Grid.Row>
                   {displayOutcome}
