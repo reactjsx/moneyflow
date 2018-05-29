@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { Route, Link, Redirect } from 'react-router-dom';
-import { Button, Segment, Header, Progress, Icon, Grid } from 'semantic-ui-react';
+import { Button, Segment, Header, Progress, Grid } from 'semantic-ui-react';
 import { getTransactions, isSignedIn, getCurrentDate } from '../utils/helper';
 import currencies from '../common/currencies';
 import months from '../common/months';
+import AddBudgetForm from './AddBudgetForm';
 
 class Report extends Component {
   state = {
@@ -111,7 +112,7 @@ class Report extends Component {
                   </Grid.Row>
                   { !budgets[category] && (
                     <Grid.Row style={{ padding: 0 }}>
-                      <Button circular color='green' icon><Icon name='plus'/></Button>
+                      <AddBudgetForm />
                     </Grid.Row>
                   ) }
                   
