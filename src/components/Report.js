@@ -58,9 +58,13 @@ class Report extends Component {
           render={({ match }) => {
             const totalOutcome = {};
             const totalIncome = {};
-            const budgets = this.state.budgets.filter(b => (
-              b.year === Number(match.params.year)  && b.month === Number(match.params.month)
-            ));
+            const budgets = {};
+            this.state.budgets.filter(b => (
+              b.year === Number(match.params.year)  && 
+              b.month === Number(match.params.month) && 
+              b.currency === this.state.displayCurrency
+            )).forEach(budget => budgets[budget.category] = budget.amount);
+            
             this.state.wallets.forEach(wallet => {
               if (wallet.currency !== this.state.displayCurrency) return;
               
@@ -86,27 +90,42 @@ class Report extends Component {
             const currencyCode = currencies.filter(c => c.value === this.state.displayCurrency)[0].code;
             const monthString = months.filter(m => m.value === Number(match.params.month))[0].code;
             const outcomeCategory = Object.keys(totalOutcome);
-            const displayOutcome = outcomeCategory.map(category => (
-              <Grid.Row columns={2} key={category} >
-                <Grid.Column>
-                  <Header size='small' textAlign='right' >
-                    {category}
-                  </Header>
-                </Grid.Column>
-                <Grid.Column>
-                  <Header size='small' textAlign='left' >
-                    {currencyCode} {totalOutcome[category].reduce((a, b) => a + b, 0)}
-                  </Header>
-                </Grid.Column>
-                { budgets[category] && <Progress percent={50} color='green' label={totalOutcome[category].reduce((a, b) => a + b, 0)} /> }
-              </Grid.Row>
-            ));
+            const displayOutcome = outcomeCategory.map(category => {
+              const sumOfCategory = totalOutcome[category].reduce((a, b) => a + b, 0);
+              const percentage = sumOfCategory / budgets[category];
+              const percentageLabel = `${sumOfCategory} / ${budgets[category]}`
+              return (
+              <div key={category}>
+                <Grid textAlign='center'>
+                  <Grid.Row columns={2}>
+                    <Grid.Column>
+                      <Header size='small' textAlign='right'>
+                        {category}
+                      </Header>
+                    </Grid.Column>
+                    <Grid.Column>
+                      <Header size='small' textAlign='left'>
+                        {currencyCode} {totalOutcome[category].reduce((a, b) => a + b, 0)}
+                      </Header>
+                    </Grid.Column>
+                  </Grid.Row>
+                  { !budgets[category] && (
+                    <Grid.Row style={{ padding: 0 }}>
+                      <Button circular color='green' icon><Icon name='plus'/></Button>
+                    </Grid.Row>
+                  ) }
+                  
+                </Grid>
+                { !budgets[category] && <div style={{marginBottom: '30px'}} /> }
+                { budgets[category] && <Progress style={{ marginBottom: '60px' }} percent={percentage} color='green' label={percentageLabel} /> }
+              </div>
+              )}
+            );
             return (
               <Segment raised>
                 <Header textAlign='center' color='red'>
                   {`Total Outcome of ${monthString}, ${currentDate.year}`}
                 </Header>
-                
                 <Grid textAlign='center' >
                   <Grid.Row columns={3}>
                     <Grid.Column>
@@ -174,8 +193,8 @@ class Report extends Component {
                     <Grid.Column>
                     </Grid.Column>
                   </Grid.Row>
-                  {displayOutcome}
                 </Grid>
+                {displayOutcome}
               </Segment>
             );
           }}
