@@ -122,6 +122,19 @@ export function createBudget(data) {
   });
 }
 
+export function deleteBudget(data) {
+  const token = localStorage.getItem('wodeqian-token');
+  const url = `https://tranquil-bastion-52140.herokuapp.com/api/budgets?token=${token}`;
+  return fetch(url, {
+    method: 'delete',
+    body: JSON.stringify(data),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    }
+  });
+}
+
 export function getCurrentDate() {
   const today = new Date();
   return {

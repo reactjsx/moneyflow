@@ -12,7 +12,7 @@ class AddBudgetForm extends Component {
     modalOpen: false,
     budget: {
       category: this.props.category || '',
-      currency: '',
+      currency: this.props.currency || '',
       year: '',
       month: '',
       amount: ''
@@ -20,7 +20,16 @@ class AddBudgetForm extends Component {
     errors: {}
   };
 
-  handleOpenClick = () => this.setState({ modalOpen: true });
+  handleOpenClick = () => this.setState({
+    modalOpen: true,
+    budget: {
+      category: this.props.category || '',
+      currency: this.props.currency || '',
+      year: '',
+      month: '',
+      amount: ''
+    }
+  });
 
   handleCloseClick = () => this.setState({ modalOpen: false });
   
@@ -74,7 +83,7 @@ class AddBudgetForm extends Component {
     ));
     return (
       <Modal
-        trigger={<Button icon='plus' circular basic onClick={this.handleOpenClick} />}
+        trigger={<Button icon='plus' circular color='green' onClick={this.handleOpenClick} />}
         open={this.state.modalOpen}
         onClose={this.handleClose}
         basic
@@ -96,7 +105,6 @@ class AddBudgetForm extends Component {
             </Form.Field>
             <Form.Field>
               <Dropdown
-                placeholder='Currency'
                 value={this.state.budget.currency}
                 onChange={this.handleInputChange}
                 selection

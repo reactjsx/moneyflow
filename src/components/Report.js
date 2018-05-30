@@ -5,7 +5,7 @@ import { getTransactions, isSignedIn, getCurrentDate } from '../utils/helper';
 import currencies from '../common/currencies';
 import months from '../common/months';
 import AddBudgetForm from './AddBudgetForm';
-import { createBudget } from '../utils/helper';
+import { createBudget, deleteBudget } from '../utils/helper';
 
 class Report extends Component {
   state = {
@@ -56,6 +56,19 @@ class Report extends Component {
       .catch((e) => console.error(e));
   }
   
+  handleTrashClick = (budgetId) => {
+    deleteBudget({id: budgetId})
+      .then(res => res.json())
+      .then(res => {
+        if (res.error) {
+          this.setState({ redirectSignIn: true });
+          throw new Error('Response Error');
+        }
+      })
+      .then(() => this.setTransactions())
+      .then(() => this.forceUpdate());
+  }
+  
   setDisplayCurrency = (displayCurrency) => {
     this.setState({ displayCurrency });
   }
@@ -83,7 +96,7 @@ class Report extends Component {
               b.year === Number(match.params.year)  && 
               b.month === Number(match.params.month) && 
               b.currency === this.state.displayCurrency
-            )).forEach(budget => budgets[budget.category] = budget.amount);
+            )).forEach(budget => budgets[budget.category] = { id: budget._id, amount: budget.amount });
             
             this.state.wallets.forEach(wallet => {
               if (wallet.currency !== this.state.displayCurrency) return;
@@ -109,11 +122,12 @@ class Report extends Component {
             });
             const currencyCode = currencies.filter(c => c.value === this.state.displayCurrency)[0].code;
             const monthString = months.filter(m => m.value === Number(match.params.month))[0].code;
-            const outcomeCategory = Object.keys(totalOutcome);
+            const outcomeCategory = ['Convenient Store', 'Supermarket', 'Eating Out', 'Shopping', 'Transportation'];
             const displayOutcome = outcomeCategory.map(category => {
-              const sumOfCategory = totalOutcome[category].reduce((a, b) => a + b, 0);
-              const percentage = sumOfCategory / budgets[category];
-              const percentageLabel = `${sumOfCategory} / ${budgets[category]}`;
+              let sumOfCategory = 0;
+              if (totalOutcome[category]) {
+                sumOfCategory = totalOutcome[category].reduce((a, b) => a + b, 0);
+              }
               return (
               <div key={category}>
                 <Grid textAlign='center'>
@@ -125,7 +139,7 @@ class Report extends Component {
                     </Grid.Column>
                     <Grid.Column>
                       <Header size='small' textAlign='left'>
-                        {currencyCode} {totalOutcome[category].reduce((a, b) => a + b, 0)}
+                        {currencyCode} {sumOfCategory}
                       </Header>
                     </Grid.Column>
                   </Grid.Row>
@@ -134,18 +148,25 @@ class Report extends Component {
                       <AddBudgetForm
                         onAddBudgetClick={this.handleAddBudgetClick}
                         category={category}
+                        currency={this.state.displayCurrency}
                       />
                     </Grid.Row>
                   )}
                   { budgets[category] && (
                     <Grid.Row style={{ paddingTop: 0, marginBottom: '10px' }}>
-                      <Button size='small' icon='trash' basic color='red' />
+                      <Button onClick={() => this.handleTrashClick(budgets[category].id)} size='small' icon='trash' basic color='red' />
                       <Button size='small' icon='pencil' basic color='green' />
                     </Grid.Row>
                   )}
                 </Grid>
                 { !budgets[category] && <div style={{marginBottom: '30px'}} /> }
-                { budgets[category] && <Progress style={{ marginBottom: '60px' }} percent={percentage} color='green' label={percentageLabel} /> }
+                { budgets[category] && (
+                  <Progress 
+                    style={{ marginBottom: '60px' }}
+                    color={Math.floor(sumOfCategory * 100 / budgets[category].amount) >= 100 ? 'red' : 'green'}
+                    percent={Math.floor(sumOfCategory * 100 / budgets[category].amount)}
+                    label={`${budgets[category].amount - sumOfCategory} / ${budgets[category].amount}`} />
+                )}
               </div>
               )}
             );
