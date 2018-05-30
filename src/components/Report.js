@@ -149,6 +149,8 @@ class Report extends Component {
                         onAddBudgetClick={this.handleAddBudgetClick}
                         category={category}
                         currency={this.state.displayCurrency}
+                        month={Number(match.params.month)}
+                        year={Number(match.params.year)}
                       />
                     </Grid.Row>
                   )}

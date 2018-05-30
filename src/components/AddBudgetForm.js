@@ -11,8 +11,8 @@ class AddBudgetForm extends Component {
   state = { 
     modalOpen: false,
     budget: {
-      category: this.props.category || '',
-      currency: this.props.currency || '',
+      category: '',
+      currency: '',
       year: '',
       month: '',
       amount: ''
@@ -25,8 +25,8 @@ class AddBudgetForm extends Component {
     budget: {
       category: this.props.category || '',
       currency: this.props.currency || '',
-      year: '',
-      month: '',
+      year: this.props.year || '',
+      month: this.props.month || '',
       amount: ''
     }
   });
@@ -115,7 +115,6 @@ class AddBudgetForm extends Component {
             </Form.Field>
             <Form.Field>
               <Dropdown
-                placeholder='Year'
                 value={this.state.budget.year}
                 onChange={this.handleInputChange}
                 selection
@@ -126,7 +125,6 @@ class AddBudgetForm extends Component {
             </Form.Field>
             <Form.Field>
               <Dropdown
-                placeholder='Month'
                 value={this.state.budget.month}
                 onChange={this.handleInputChange}
                 selection
