@@ -5,6 +5,7 @@ import { getTransactions, isSignedIn, getCurrentDate } from '../utils/helper';
 import currencies from '../common/currencies';
 import months from '../common/months';
 import AddBudgetForm from './AddBudgetForm';
+import { createBudget } from '../utils/helper';
 
 class Report extends Component {
   state = {
@@ -31,10 +32,28 @@ class Report extends Component {
       } else {
         this.setState({ nickname: res.nickname });
       }
-    }).then(() => getTransactions(data => {
-      this.setState({ wallets: data.wallets, budgets: data.budgets });
-    }))
+    }).then(() => this.setTransactions())
       .catch(e => console.error(e));
+  }
+  
+  setTransactions = () => {
+    getTransactions(data => {
+      this.setState({ wallets: data.wallets, budgets: data.budgets });
+    });
+  }
+  
+  handleAddBudgetClick = (budget) => {
+    createBudget(budget)
+      .then(res => res.json())
+      .then(res => {
+        if (res.error) {
+          this.setState({ redirectSignIn: true });
+          throw new Error('Response Error');
+        }
+      })
+      .then(() => this.setTransactions())
+      .then(() => this.forceUpdate())
+      .catch((e) => console.error(e));
   }
   
   setDisplayCurrency = (displayCurrency) => {
@@ -94,7 +113,7 @@ class Report extends Component {
             const displayOutcome = outcomeCategory.map(category => {
               const sumOfCategory = totalOutcome[category].reduce((a, b) => a + b, 0);
               const percentage = sumOfCategory / budgets[category];
-              const percentageLabel = `${sumOfCategory} / ${budgets[category]}`
+              const percentageLabel = `${sumOfCategory} / ${budgets[category]}`;
               return (
               <div key={category}>
                 <Grid textAlign='center'>
@@ -112,10 +131,18 @@ class Report extends Component {
                   </Grid.Row>
                   { !budgets[category] && (
                     <Grid.Row style={{ padding: 0 }}>
-                      <AddBudgetForm />
+                      <AddBudgetForm
+                        onAddBudgetClick={this.handleAddBudgetClick}
+                        category={category}
+                      />
                     </Grid.Row>
-                  ) }
-                  
+                  )}
+                  { budgets[category] && (
+                    <Grid.Row style={{ paddingTop: 0, marginBottom: '10px' }}>
+                      <Button size='small' icon='trash' basic color='red' />
+                      <Button size='small' icon='pencil' basic color='green' />
+                    </Grid.Row>
+                  )}
                 </Grid>
                 { !budgets[category] && <div style={{marginBottom: '30px'}} /> }
                 { budgets[category] && <Progress style={{ marginBottom: '60px' }} percent={percentage} color='green' label={percentageLabel} /> }

@@ -11,7 +11,7 @@ class AddBudgetForm extends Component {
   state = { 
     modalOpen: false,
     budget: {
-      category: '',
+      category: this.props.category || '',
       currency: '',
       year: '',
       month: '',
@@ -86,7 +86,6 @@ class AddBudgetForm extends Component {
             {errorMessages}
             <Form.Field>
               <Dropdown
-                placeholder='Category'
                 value={this.state.budget.category}
                 onChange={this.handleInputChange}
                 selection
@@ -153,7 +152,7 @@ class AddBudgetForm extends Component {
 }
 
 AddBudgetForm.propTypes = {
-  onAddbudgetClick: PropTypes.func.isRequired
-}
+  onAddBudgetClick: PropTypes.func.isRequired
+};
 
 export default AddBudgetForm;

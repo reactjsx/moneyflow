@@ -109,6 +109,19 @@ export function createWallet(data) {
   });
 }
 
+export function createBudget(data) {
+  const token = localStorage.getItem('wodeqian-token');
+  const url = `https://tranquil-bastion-52140.herokuapp.com/api/budgets?token=${token}`;
+  return fetch(url, {
+    method: 'post',
+    body: JSON.stringify(data),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    }
+  });
+}
+
 export function getCurrentDate() {
   const today = new Date();
   return {
