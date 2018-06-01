@@ -87,8 +87,19 @@ class Report extends Component {
     return (
       <div>
         <Route
-          path='/reports/:year/:month'
+          path='/reports/:wallet/:year/:month'
           render={({ match }) => {
+            let year = match.params.year, 
+                newMonth = Number(match.params.month) + 1,
+                oldMonth = Number(match.params.month) - 1;
+            if (oldMonth === 0) {
+              oldMonth = 12;
+              year = year - 1;
+            }
+            if (newMonth === 13) {
+              newMonth = 1;
+              year = year + 1;
+            }
             const totalOutcome = {};
             const totalIncome = {};
             const budgets = {};
@@ -181,7 +192,10 @@ class Report extends Component {
                   <Grid.Row columns={3}>
                     <Grid.Column>
                       <Link
-                        to={`/reports/${match.params.year}/${Number(match.params.month) - 1}`}
+                        to={match.params.wallet !== 'noWallet' ?
+                          `/reports/${match.params.wallet}/${year}/${oldMonth}` :
+                          `/reports/noWallet/${year}/${oldMonth}`
+                        }
                       >
                         <Button
                           basic
@@ -193,7 +207,10 @@ class Report extends Component {
                     </Grid.Column>
                     <Grid.Column>
                       <Link
-                        to={`/wallets`}
+                        to={match.params.wallet !== 'noWallet' ?
+                          `/wallets/${match.params.wallet}/${match.params.year}/${match.params.month}` :
+                          '/wallets'
+                        }
                       >
                         <Button
                           circular
@@ -205,7 +222,10 @@ class Report extends Component {
                     </Grid.Column>
                     <Grid.Column>
                       <Link
-                        to={`/reports/${match.params.year}/${Number(match.params.month) + 1}`}
+                        to={match.params.wallet !== '#' ?
+                          `/reports/${match.params.wallet}/${year}/${newMonth}` :
+                          `/reports/noWallet/${year}/${newMonth}`
+                        }
                       >
                         <Button
                           basic
@@ -254,7 +274,7 @@ class Report extends Component {
           path='/reports'
           render={() => (
             <Redirect
-              to={`/reports/${currentDate.year}/${currentDate.month}`}
+              to={`/reports/noWallet/${currentDate.year}/${currentDate.month}`}
             />
           )}
         />

@@ -161,7 +161,7 @@ class WalletList extends Component {
           </div>
           
           <Route
-            path='/wallets/:walletId/:month'
+            path='/wallets/:walletId/:year/:month'
             render={({ match }) => {
               const wallet = this.state.wallets.find(w => (
                 w._id === match.params.walletId
@@ -175,7 +175,7 @@ class WalletList extends Component {
               const totalConsumption = costs.reduce((a, b) => a + b, 0);
 
               const currentMonthTransactions = wallet.transactions.filter(transaction => (
-                transaction.month === Number(match.params.month)
+                transaction.month === Number(match.params.month) && transaction.year === Number(match.params.year)
               ));
               const thisMonthCosts = currentMonthTransactions.map(transaction => {
                 if (transaction.type === 'Income' || transaction.category === 'Transfer To') {
@@ -216,7 +216,10 @@ class WalletList extends Component {
                   <Grid.Row columns={3}>
                     <Grid.Column>
                       <Link
-                        to={`/wallets/${wallet._id}/${Number(match.params.month) - 1}`}
+                        to={ Number(match.params.month) > 1 ?
+                          `/wallets/${wallet._id}/${match.params.year}/${Number(match.params.month) - 1}` :
+                          `/wallets/${wallet._id}/${Number(match.params.year) - 1}/12`
+                        }
                       >
                         <Button
                           basic
@@ -227,10 +230,23 @@ class WalletList extends Component {
                       </Link>
                     </Grid.Column>
                     <Grid.Column>
+                      <Link
+                        to={`/reports/${wallet._id}/${match.params.year}/${match.params.month}`}
+                      >
+                        <Button
+                          circular
+                          color='blue'
+                        >
+                          Report
+                        </Button>
+                      </Link>
                     </Grid.Column>
                     <Grid.Column>
                       <Link
-                        to={`/wallets/${wallet._id}/${Number(match.params.month) + 1}`}
+                        to={ Number(match.params.month) < 12 ?
+                          `/wallets/${wallet._id}/${match.params.year}/${Number(match.params.month) + 1}` :
+                          `/wallets/${wallet._id}/${Number(match.params.year) + 1}/1`
+                        }
                       >
                         <Button
                           basic
@@ -260,7 +276,7 @@ class WalletList extends Component {
             path='/wallets/:walletId/'
             render={({ match }) => (
               <Redirect
-                to={`/wallets/${match.params.walletId}/${currentDate.month}`}
+                to={`/wallets/${match.params.walletId}/${currentDate.year}/${currentDate.month}`}
               />
             )}
           />
