@@ -4,10 +4,10 @@ import { Button, Segment, Header, Progress, Grid, Divider } from 'semantic-ui-re
 import { getTransactions, isSignedIn, getCurrentDate } from '../utils/helper';
 import currencies from '../common/currencies';
 import months from '../common/months';
-import AddBudgetForm from './AddBudgetForm';
+import AddBudgetForm from '../components/AddBudgetForm';
 import { createBudget, deleteBudget } from '../utils/helper';
 
-class Report extends Component {
+class ReportPage extends Component {
   state = {
     redirectSignIn: false,
     displayCurrency: 'jp',
@@ -328,4 +328,4 @@ class Report extends Component {
   }
 }
 
-export default Report;
+export default ReportPage;

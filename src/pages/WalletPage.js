@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { Route, NavLink, Link, Redirect } from 'react-router-dom';
-import { Button, Segment, Header, Loader, Grid } from 'semantic-ui-react';
+import { Button, Segment, Header, Grid } from 'semantic-ui-react';
 import { getTransactions, createTransaction, updateTransaction, createWallet, isSignedIn, getCurrentDate, deleteTransaction } from '../utils/helper';
-import AddTransactionPanel from './AddTransactionPanel';
-import Wallet from './Wallet';
-import AddWalletForm from './AddWalletForm';
+import AddTransactionPanel from '../components/AddTransactionPanel';
+import Wallet from '../components/Wallet';
+import WalletMenu from '../components/WalletMenu';
 import currencies from '../common/currencies';
 import months from '../common/months';
 
-class WalletList extends Component {
+class WalletPage extends Component {
   state = {
     redirectSignIn: false,
     wallets: [],
@@ -127,26 +127,12 @@ class WalletList extends Component {
       ));
       return (
         <div>
-          <div className='ui tabular top attached menu'>
-            <div className='header item'>
-              {this.state.nickname}
-            </div>
-            {walletBar}
-            <div className='item'>
-              <AddWalletForm
-                onAddWalletClick={this.handleAddWalletClick}
-              />
-            </div>
-            <div className='item'>
-              <Button
-                circular
-                color='red'
-                onClick={this.handleSignOutClick}
-              >
-                SignOut
-              </Button>
-            </div>
-          </div>
+          <WalletMenu
+            walletBar={walletBar}
+            onAddWalletClick={this.handleAddWalletClick}
+            nickname={this.state.nickname}
+            onSignOutClick={this.handleSignOutClick}
+          />
           
           <Route
             path='/wallets/:walletId/:year/:month'
@@ -272,27 +258,12 @@ class WalletList extends Component {
       );
     }
     return (
-      <div>
-        <div className='ui tabular top attached menu'>
-          <div className='item'>
-            <AddWalletForm
-              onAddWalletClick={this.handleAddWalletClick}
-            />
-          </div>
-          <div className='item'>
-            <Button
-              circular
-              color='red'
-              onClick={this.handleSignOutClick}
-            >
-              SignOut
-            </Button>
-          </div>
-        </div>
-        <Loader active />
-      </div>
+      <WalletMenu
+        onAddWalletClick={this.handleAddWalletClick}
+        onSignOutClick={this.handleSignOutClick}
+      />
     );
   }
 }
 
-export default WalletList;
+export default WalletPage;
