@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import { Route, Redirect, Link } from 'react-router-dom';
 import { Header, Icon } from 'semantic-ui-react';
 import WalletList from './components/WalletList';
 import SignUp from './components/SignUp';
@@ -8,9 +8,11 @@ import Report from './components/Report';
 
 const App = () => (
   <div className='ui container'>
-    <Header size='huge' textAlign='center' style={{marginTop: '30px'}}>
-      <Icon name='money' />Wo De Qian
-    </Header>
+    <Link to='/'>
+      <Header size='huge' textAlign='center' style={{marginTop: '30px'}}>
+        <Icon name='money' />Wo De Qian
+      </Header>
+    </Link>
     <Route path='/signin' component={ SignIn } />
     <Route path='/signup' component={ SignUp } />
     <Route path='/wallets' component={ WalletList } />

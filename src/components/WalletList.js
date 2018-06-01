@@ -138,18 +138,6 @@ class WalletList extends Component {
               />
             </div>
             <div className='item'>
-              <Link
-                to={`/reports`}
-              >
-                <Button
-                  circular
-                  color='blue'
-                >
-                  Report
-                </Button>
-              </Link>
-            </div>
-            <div className='item'>
               <Button
                 circular
                 color='red'
@@ -202,8 +190,8 @@ class WalletList extends Component {
                   currentDate={currentDate}
                 />
 
-                <Header textAlign='center' color='blue'>
-                  {`Transactions of ${monthString}`}
+                <Header size='huge' textAlign='center' color='blue'>
+                  {`${monthString}, ${match.params.year}`}
                 </Header>
                 <Header textAlign='center' color='red' >
                   Consumption: {currencyCode} {thisMonthConsumtion}

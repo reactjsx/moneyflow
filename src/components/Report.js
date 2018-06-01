@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Route, Link, Redirect } from 'react-router-dom';
-import { Button, Segment, Header, Progress, Grid } from 'semantic-ui-react';
+import { Button, Segment, Header, Progress, Grid, Divider } from 'semantic-ui-react';
 import { getTransactions, isSignedIn, getCurrentDate } from '../utils/helper';
 import currencies from '../common/currencies';
 import months from '../common/months';
@@ -89,19 +89,21 @@ class Report extends Component {
         <Route
           path='/reports/:wallet/:year/:month'
           render={({ match }) => {
-            let year = match.params.year, 
+            let oldYear = Number(match.params.year),
+                newYear = Number(match.params.year),
                 newMonth = Number(match.params.month) + 1,
                 oldMonth = Number(match.params.month) - 1;
             if (oldMonth === 0) {
               oldMonth = 12;
-              year = year - 1;
-            }
-            if (newMonth === 13) {
+              oldYear = oldYear - 1;
+            } else if (newMonth === 13) {
               newMonth = 1;
-              year = year + 1;
+              newYear = newYear + 1;
             }
-            const totalOutcome = {};
-            const totalIncome = {};
+            let totalSpent = 0;
+            let totalIncome = 0;
+            const categoricalSpent = {};
+            const categoricalIncome = {};
             const budgets = {};
             this.state.budgets.filter(b => (
               b.year === Number(match.params.year)  && 
@@ -117,39 +119,46 @@ class Report extends Component {
               )).sort((a, b) => (b.day - a.day));
               thisWalletTransactions.forEach(t => {
                 if (t.type === 'Outcome') {
-                  if (typeof totalOutcome[t.category] === 'undefined') {
-                    totalOutcome[t.category] = [t.cost];
+                  if (t.category === 'Transfer To') return;
+                  totalSpent += t.cost;
+                  if (typeof categoricalSpent[t.category] === 'undefined') {
+                    categoricalSpent[t.category] = [t.cost];
                   } else {
-                    totalOutcome[t.category].push(t.cost);
+                    categoricalSpent[t.category].push(t.cost);
                   }
                 } else {
-                  if (typeof totalIncome[t.category] === 'undefined') {
-                    totalIncome[t.category] = [t.cost];
+                  if (t.category === 'Transfer From') return;
+                  totalIncome += t.cost;
+                  if (typeof categoricalIncome[t.category] === 'undefined') {
+                    categoricalIncome[t.category] = [t.cost];
                   } else {
-                    totalIncome[t.category].push(t.cost);
+                    categoricalIncome[t.category].push(t.cost);
                   }
                 }
               });
             });
+            const balance = totalIncome - totalSpent;
             const currencyCode = currencies.filter(c => c.value === this.state.displayCurrency)[0].code;
             const monthString = months.filter(m => m.value === Number(match.params.month))[0].code;
             const outcomeCategory = ['Convenient Store', 'Supermarket', 'Eating Out', 'Shopping', 'Transportation'];
             const displayOutcome = outcomeCategory.map(category => {
               let sumOfCategory = 0;
-              if (totalOutcome[category]) {
-                sumOfCategory = totalOutcome[category].reduce((a, b) => a + b, 0);
+              if (categoricalSpent[category]) {
+                sumOfCategory = categoricalSpent[category].reduce((a, b) => a + b, 0);
               }
               return (
               <div key={category}>
                 <Grid textAlign='center'>
-                  <Grid.Row columns={2}>
+                  <Grid.Row style={{ paddingBottom: 0 }}>
                     <Grid.Column>
-                      <Header size='small' textAlign='right'>
+                      <Header size='small'>
                         {category}
                       </Header>
                     </Grid.Column>
+                  </Grid.Row>
+                  <Grid.Row style={{ paddingTop: '5px' }}>
                     <Grid.Column>
-                      <Header size='small' textAlign='left'>
+                      <Header size='small'>
                         {currencyCode} {sumOfCategory}
                       </Header>
                     </Grid.Column>
@@ -176,6 +185,7 @@ class Report extends Component {
                 { budgets[category] && (
                   <Progress 
                     style={{ marginBottom: '60px' }}
+                    progress
                     color={Math.floor(sumOfCategory * 100 / budgets[category].amount) >= 100 ? 'red' : 'green'}
                     percent={Math.floor(sumOfCategory * 100 / budgets[category].amount)}
                     label={`${budgets[category].amount - sumOfCategory} / ${budgets[category].amount}`} />
@@ -185,21 +195,21 @@ class Report extends Component {
             );
             return (
               <Segment raised>
-                <Header textAlign='center' color='red'>
-                  {`Total Outcome of ${monthString}, ${currentDate.year}`}
+                <Header size='huge' textAlign='center' color='blue'>
+                  {`${monthString}, ${match.params.year}`}
                 </Header>
                 <Grid textAlign='center' >
                   <Grid.Row columns={3}>
                     <Grid.Column>
                       <Link
                         to={match.params.wallet !== 'noWallet' ?
-                          `/reports/${match.params.wallet}/${year}/${oldMonth}` :
-                          `/reports/noWallet/${year}/${oldMonth}`
+                          `/reports/${match.params.wallet}/${oldYear}/${oldMonth}` :
+                          `/reports/noWallet/${oldYear}/${oldMonth}`
                         }
                       >
                         <Button
                           basic
-                          color='blue'
+                          color='green'
                         >
                           Previous
                         </Button>
@@ -214,7 +224,7 @@ class Report extends Component {
                       >
                         <Button
                           circular
-                          color='blue'
+                          color='green'
                         >
                           Transactions
                         </Button>
@@ -223,13 +233,13 @@ class Report extends Component {
                     <Grid.Column>
                       <Link
                         to={match.params.wallet !== '#' ?
-                          `/reports/${match.params.wallet}/${year}/${newMonth}` :
-                          `/reports/noWallet/${year}/${newMonth}`
+                          `/reports/${match.params.wallet}/${newYear}/${newMonth}` :
+                          `/reports/noWallet/${newYear}/${newMonth}`
                         }
                       >
                         <Button
                           basic
-                          color='blue'
+                          color='green'
                         >
                           Next
                         </Button>
@@ -264,6 +274,41 @@ class Report extends Component {
                     <Grid.Column>
                     </Grid.Column>
                   </Grid.Row>
+                  <Grid.Row columns={2}>
+                    <Grid.Column>
+                      <Header textAlign='right'>
+                        Total Income
+                      </Header>
+                    </Grid.Column>
+                    <Grid.Column>
+                      <Header textAlign='left' color='blue'>
+                        {currencyCode} {totalIncome}
+                      </Header>
+                    </Grid.Column>
+                    <Grid.Column>
+                      <Header textAlign='right'>
+                        Total Spent
+                      </Header>
+                    </Grid.Column>
+                    <Grid.Column>
+                      <Header textAlign='left' color='red'>
+                        {currencyCode} {totalSpent}
+                      </Header>
+                    </Grid.Column>
+                  </Grid.Row>
+                  <Grid.Row columns={2}>
+                    <Grid.Column>
+                      <Header textAlign='right'>
+                        Balance
+                      </Header>
+                    </Grid.Column>
+                    <Grid.Column>
+                      <Header textAlign='left' color={balance < 0 ? 'red' : 'green'}>
+                        {currencyCode} {balance}
+                      </Header>
+                    </Grid.Column>
+                  </Grid.Row>
+                  <Divider />
                 </Grid>
                 {displayOutcome}
               </Segment>
