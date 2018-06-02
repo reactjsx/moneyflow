@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Grid } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
-import AddTransactionForm from './AddTransactionForm';
+import AddTransactionForm from '../forms/AddTransactionForm';
 
 class AddTransactionPanel extends Component {
   state = {

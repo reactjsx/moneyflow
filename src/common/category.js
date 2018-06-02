@@ -21,6 +21,10 @@ const category = {
       value: 'Eating Out'
     },
     {
+      text: 'Beverage',
+      value: 'Beverage'
+    },
+    {
       text: 'House Rent',
       value: 'House Rent'
     },
@@ -56,6 +60,11 @@ const category = {
       text: 'Public Service',
       value: 'Public Service'
     },
+    {
+      text: 'Air Ticket',
+      value: 'Air Ticket'
+    },
+
     {
       text: 'Education',
       value: 'Education'

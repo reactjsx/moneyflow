@@ -4,7 +4,7 @@ import { Button, Segment, Header, Progress, Grid, Divider } from 'semantic-ui-re
 import { getTransactions, isSignedIn, getCurrentDate } from '../utils/helper';
 import currencies from '../common/currencies';
 import months from '../common/months';
-import AddBudgetForm from '../components/AddBudgetForm';
+import AddBudgetForm from '../forms/AddBudgetForm';
 import { createBudget, deleteBudget } from '../utils/helper';
 
 class ReportPage extends Component {

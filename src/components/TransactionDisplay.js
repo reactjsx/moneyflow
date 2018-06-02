@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
-import UpdateTransactionForm from './UpdateTransactionForm';
+import UpdateTransactionForm from '../forms/UpdateTransactionForm';
 import DeleteConfirmDialog from './DeleteConfirmDialog';
 
 const TransactionDisplay = (props) => {

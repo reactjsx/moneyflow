@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Loader } from 'semantic-ui-react';
-import AddWalletForm from '../components/AddWalletForm';
+import AddWalletForm from '../forms/AddWalletForm';
 
 const WalletMenu = (props) => (
   <div>
