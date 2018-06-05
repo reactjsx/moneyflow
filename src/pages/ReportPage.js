@@ -193,6 +193,7 @@ class ReportPage extends Component {
                     transactions={categoricalSpentDailySpent[category]}
                     category={category}
                     budget={budgets[category].amount}
+                    month={Number(match.params.month)}
                   />
                 )}
                 { budgets[category] && (
