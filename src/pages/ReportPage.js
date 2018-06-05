@@ -181,21 +181,13 @@ class ReportPage extends Component {
                     </Grid.Row>
                   )}
                   { budgets[category] && (
-                    <Grid.Row style={{ paddingTop: 0, marginBottom: '10px' }}>
+                    <Grid.Row style={{ paddingTop: 0 }}>
                       <Button circular onClick={() => this.handleTrashClick(budgets[category].id)} size='small' icon='trash' basic color='red' />
                       <Button circular size='small' icon='pencil' basic color='green' />
                     </Grid.Row>
                   )}
                 </Grid>
-                { !budgets[category] && <div style={{marginBottom: '30px'}} /> }
-                { budgets[category] && (
-                  <Progress 
-                    style={{ marginBottom: '30px' }}
-                    progress
-                    color={Math.floor(sumOfCategory * 100 / budgets[category].amount) >= 100 ? 'red' : 'green'}
-                    percent={Math.floor(sumOfCategory * 100 / budgets[category].amount)}
-                    label={`${budgets[category].amount - sumOfCategory} / ${budgets[category].amount}`} />
-                )}
+                
                 { sumOfCategory > 0 && budgets[category] && (
                   <ForecastChart
                     transactions={categoricalSpentDailySpent[category]}
@@ -203,6 +195,16 @@ class ReportPage extends Component {
                     budget={budgets[category].amount}
                   />
                 )}
+                { budgets[category] && (
+                  <Progress 
+                    style={{ marginTop: '14px', marginBottom: '40px' }}
+                    progress
+                    color={Math.floor(sumOfCategory * 100 / budgets[category].amount) >= 100 ? 'red' : 'green'}
+                    percent={Math.floor(sumOfCategory * 100 / budgets[category].amount)}
+                    label={`${budgets[category].amount - sumOfCategory} / ${budgets[category].amount}`} />
+                )}
+                
+                { !budgets[category] && <div style={{marginBottom: '30px'}} /> }
               </div>
               )}
             );

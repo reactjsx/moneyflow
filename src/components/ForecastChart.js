@@ -48,7 +48,7 @@ class ForecastChart extends Component {
   render() {
     if (!this.state.displayChart) {
       return (
-        <Grid textAlign='center' style={{ marginTop: '14px', marginBottom: '14px' }} >
+        <Grid textAlign='center' style={{ marginTop: 0 }} >
           <Grid.Row>
             <Button 
               onClick={() => this.setState({ displayChart: true })}
@@ -60,7 +60,10 @@ class ForecastChart extends Component {
       );
     }
     return (
-      <div onClick={() => this.setState({ displayChart: false })} >
+      <div
+        style={{ marginTop: '10px' }}
+        onClick={() => this.setState({ displayChart: false })}
+      >
         <HighchartsReact
           highcharts={Highcharts}
           options={this.state}
