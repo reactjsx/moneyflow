@@ -5,6 +5,7 @@ import { getTransactions, isSignedIn, getCurrentDate } from '../utils/helper';
 import currencies from '../common/currencies';
 import months from '../common/months';
 import AddBudgetForm from '../forms/AddBudgetForm';
+import ForecastChart from '../components/ForecastChart';
 import { createBudget, deleteBudget } from '../utils/helper';
 
 class ReportPage extends Component {
@@ -103,6 +104,7 @@ class ReportPage extends Component {
             let totalSpent = 0;
             let totalIncome = 0;
             const categoricalSpent = {};
+            const categoricalSpentDailySpent = {};
             const categoricalIncome = {};
             const budgets = {};
             this.state.budgets.filter(b => (
@@ -122,8 +124,11 @@ class ReportPage extends Component {
                   if (t.category === 'Transfer To') return;
                   totalSpent += t.cost;
                   if (typeof categoricalSpent[t.category] === 'undefined') {
+                    categoricalSpentDailySpent[t.category] = Array.from({length: 31}, (v, k) => 0);
+                    categoricalSpentDailySpent[t.category][t.day - 1] += t.cost;
                     categoricalSpent[t.category] = [t.cost];
                   } else {
+                    categoricalSpentDailySpent[t.category][t.day - 1] += t.cost;
                     categoricalSpent[t.category].push(t.cost);
                   }
                 } else {
@@ -148,6 +153,7 @@ class ReportPage extends Component {
               }
               return (
               <div key={category}>
+                <Divider />
                 <Grid textAlign='center'>
                   <Grid.Row style={{ paddingBottom: 0 }}>
                     <Grid.Column>
@@ -176,19 +182,26 @@ class ReportPage extends Component {
                   )}
                   { budgets[category] && (
                     <Grid.Row style={{ paddingTop: 0, marginBottom: '10px' }}>
-                      <Button onClick={() => this.handleTrashClick(budgets[category].id)} size='small' icon='trash' basic color='red' />
-                      <Button size='small' icon='pencil' basic color='green' />
+                      <Button circular onClick={() => this.handleTrashClick(budgets[category].id)} size='small' icon='trash' basic color='red' />
+                      <Button circular size='small' icon='pencil' basic color='green' />
                     </Grid.Row>
                   )}
                 </Grid>
                 { !budgets[category] && <div style={{marginBottom: '30px'}} /> }
                 { budgets[category] && (
                   <Progress 
-                    style={{ marginBottom: '60px' }}
+                    style={{ marginBottom: '30px' }}
                     progress
                     color={Math.floor(sumOfCategory * 100 / budgets[category].amount) >= 100 ? 'red' : 'green'}
                     percent={Math.floor(sumOfCategory * 100 / budgets[category].amount)}
                     label={`${budgets[category].amount - sumOfCategory} / ${budgets[category].amount}`} />
+                )}
+                { sumOfCategory > 0 && budgets[category] && (
+                  <ForecastChart
+                    transactions={categoricalSpentDailySpent[category]}
+                    category={category}
+                    budget={budgets[category].amount}
+                  />
                 )}
               </div>
               )}
@@ -308,7 +321,6 @@ class ReportPage extends Component {
                       </Header>
                     </Grid.Column>
                   </Grid.Row>
-                  <Divider />
                 </Grid>
                 {displayOutcome}
               </Segment>
