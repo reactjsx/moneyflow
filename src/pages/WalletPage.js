@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Route, NavLink, Link, Redirect } from 'react-router-dom';
 import { Button, Segment, Header, Grid } from 'semantic-ui-react';
-import { getTransactions, createTransaction, updateTransaction, createWallet, isSignedIn, getCurrentDate, deleteTransaction } from '../utils/helper';
+import { getTransactions, createTransaction, updateTransaction, createWallet, isSignedIn, getCurrentDate, deleteTransaction, convertNumber } from '../utils/helper';
 import AddTransactionPanel from '../components/AddTransactionPanel';
 import Wallet from '../components/Wallet';
 import WalletMenu from '../components/WalletMenu';
@@ -180,10 +180,10 @@ class WalletPage extends Component {
                   {`${monthString}, ${match.params.year}`}
                 </Header>
                 <Header textAlign='center' color='red' >
-                  Consumption: {currencyCode} {thisMonthConsumtion}
+                  Consumption: {currencyCode} {convertNumber(thisMonthConsumtion)}
                 </Header>
                 <Header textAlign='center' color='green' >
-                  Current Balance: {currencyCode} {wallet.initBalance - totalConsumption}
+                  Current Balance: {currencyCode} {convertNumber(wallet.initBalance - totalConsumption)}
                 </Header>
 
                 <Grid textAlign='center' columns={3}>

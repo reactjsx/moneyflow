@@ -1,3 +1,5 @@
+import numeral from 'numeral';
+
 export function getTransactions(next) {
   const token = localStorage.getItem('wodeqian-token');
   const url = `https://tranquil-bastion-52140.herokuapp.com/api/transactions?token=${token}`;
@@ -142,4 +144,8 @@ export function getCurrentDate() {
     month: today.getUTCMonth() + 1,
     year: today.getUTCFullYear()
   };
+}
+
+export function convertNumber(number) {
+  return numeral(number).format(0,0);
 }

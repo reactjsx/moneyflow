@@ -3,6 +3,7 @@ import { Button, Header, Icon, Modal, Form, Input, Dropdown, Message } from 'sem
 import isNumeric from 'validator/lib/isNumeric';
 import PropTypes from 'prop-types';
 import currencies from '../common/currencies';
+import { convertNumber } from '../utils/helper';
 
 class AddWalletForm extends Component {
   state = { 
@@ -99,7 +100,7 @@ class AddWalletForm extends Component {
             </Form.Field>
             <Form.Field>
               <Input
-                value={this.state.wallet.initBalance}
+                value={this.state.wallet.initBalance === '' ? this.state.wallet.initBalance : convertNumber(this.state.wallet.initBalance)}
                 onChange={this.handleInputChange}
                 placeholder='Init Balance'
                 fluid

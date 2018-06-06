@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Route, Link, Redirect } from 'react-router-dom';
 import { Button, Segment, Header, Progress, Grid, Divider } from 'semantic-ui-react';
-import { getTransactions, isSignedIn, getCurrentDate } from '../utils/helper';
+import { getTransactions, isSignedIn, getCurrentDate, convertNumber } from '../utils/helper';
 import currencies from '../common/currencies';
 import months from '../common/months';
 import AddBudgetForm from '../forms/AddBudgetForm';
@@ -165,7 +165,7 @@ class ReportPage extends Component {
                   <Grid.Row style={{ paddingTop: '5px' }}>
                     <Grid.Column>
                       <Header size='small'>
-                        {currencyCode} {sumOfCategory}
+                        {currencyCode} {convertNumber(sumOfCategory)}
                       </Header>
                     </Grid.Column>
                   </Grid.Row>
@@ -202,7 +202,7 @@ class ReportPage extends Component {
                     progress
                     color={Math.floor(sumOfCategory * 100 / budgets[category].amount) >= 100 ? 'red' : 'green'}
                     percent={Math.floor(sumOfCategory * 100 / budgets[category].amount)}
-                    label={`${budgets[category].amount - sumOfCategory} / ${budgets[category].amount}`} />
+                    label={`${convertNumber(budgets[category].amount - sumOfCategory)} / ${convertNumber(budgets[category].amount)}`} />
                 )}
                 
                 { !budgets[category] && <div style={{marginBottom: '30px'}} /> }
@@ -298,7 +298,7 @@ class ReportPage extends Component {
                     </Grid.Column>
                     <Grid.Column>
                       <Header textAlign='left' color='blue'>
-                        {currencyCode} {totalIncome}
+                        {currencyCode} {convertNumber(totalIncome)}
                       </Header>
                     </Grid.Column>
                     <Grid.Column>
@@ -308,7 +308,7 @@ class ReportPage extends Component {
                     </Grid.Column>
                     <Grid.Column>
                       <Header textAlign='left' color='red'>
-                        {currencyCode} {totalSpent}
+                        {currencyCode} {convertNumber(totalSpent)}
                       </Header>
                     </Grid.Column>
                   </Grid.Row>
@@ -320,7 +320,7 @@ class ReportPage extends Component {
                     </Grid.Column>
                     <Grid.Column>
                       <Header textAlign='left' color={balance < 0 ? 'red' : 'green'}>
-                        {currencyCode} {balance}
+                        {currencyCode} {convertNumber(balance)}
                       </Header>
                     </Grid.Column>
                   </Grid.Row>

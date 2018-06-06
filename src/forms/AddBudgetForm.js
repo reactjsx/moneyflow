@@ -6,6 +6,7 @@ import currencies from '../common/currencies';
 import category from '../common/category';
 import years from '../common/years';
 import months from '../common/months';
+import { convertNumber } from '../utils/helper';
 
 class AddBudgetForm extends Component {
   state = { 
@@ -135,7 +136,7 @@ class AddBudgetForm extends Component {
             </Form.Field>
             <Form.Field>
               <Input
-                value={this.state.budget.amount}
+                value={this.state.budget.amount === '' ? this.state.budget.amount : convertNumber(this.state.budget.amount)}
                 onChange={this.handleInputChange}
                 placeholder='Amount'
                 fluid

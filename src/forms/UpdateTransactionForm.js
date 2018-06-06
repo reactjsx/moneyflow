@@ -7,6 +7,7 @@ import months from '../common/months';
 import days from '../common/days';
 import category from '../common/category';
 import types from '../common/types';
+import { convertNumber } from '../utils/helper';
 
 class UpdateTransactionForm extends Component {
   state = { 
@@ -129,7 +130,7 @@ class UpdateTransactionForm extends Component {
             <Form.Field>
               <Input
                 placeholder='Cost'
-                value={this.state.transaction.cost}
+                value={convertNumber(this.state.transaction.cost)}
                 onChange={this.handleInputChange}
                 fluid
                 name='cost'

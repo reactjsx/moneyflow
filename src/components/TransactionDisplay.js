@@ -3,6 +3,7 @@ import { Table } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import UpdateTransactionForm from '../forms/UpdateTransactionForm';
 import DeleteConfirmDialog from './DeleteConfirmDialog';
+import { convertNumber } from '../utils/helper';
 
 const TransactionDisplay = (props) => {
   const color = props.type === 'Income' ? 'steelblue' : 'red';
@@ -10,7 +11,7 @@ const TransactionDisplay = (props) => {
     <Table.Row>
       <Table.Cell>{props.name}</Table.Cell>
       <Table.Cell>{props.category}</Table.Cell>
-      <Table.Cell style={{'color': color}}>{`${props.currency} ${props.cost}`}</Table.Cell>
+      <Table.Cell style={{'color': color}}>{`${props.currency} ${convertNumber(props.cost)}`}</Table.Cell>
       <Table.Cell>{`${props.year}/${props.month}/${props.day}`}</Table.Cell>
       <Table.Cell>
         <DeleteConfirmDialog

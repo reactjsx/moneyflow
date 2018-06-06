@@ -13,6 +13,10 @@ const category = {
       value: 'Shopping'
     },
     {
+      text: 'Commuter Pass',
+      value: 'Commuter Pass'
+    },
+    {
       text: 'Transportation',
       value: 'Transportation'
     },

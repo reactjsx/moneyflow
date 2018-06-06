@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Modal, Icon, Header, Button, List } from 'semantic-ui-react';
+import { convertNumber } from '../utils/helper';
 
 class DeleteDialogConfirm extends Component {
   state = {
@@ -46,7 +47,7 @@ class DeleteDialogConfirm extends Component {
               Category: {this.state.category}
             </List.Item>
             <List.Item>
-              Cost: {this.state.cost}
+              Cost: {convertNumber(this.state.cost)}
             </List.Item>
             <List.Item>
               Made on: {this.state.year}/{this.state.month}/{this.state.day}
