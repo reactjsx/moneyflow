@@ -68,7 +68,7 @@ class AddWalletForm extends Component {
     ));
     return (
       <Modal
-        trigger={<Button icon='plus' basic onClick={this.handleOpenClick} />}
+        trigger={<Button icon='plus' fluid color='red' onClick={this.handleOpenClick} />}
         open={this.state.modalOpen}
         onClose={this.handleClose}
         basic

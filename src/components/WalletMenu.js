@@ -4,7 +4,7 @@ import AddWalletForm from '../forms/AddWalletForm';
 
 const WalletMenu = (props) => (
   <div>
-    <div className='ui tabular top attached menu'>
+    <div className='ui tabular top attached stackable menu'>
       <div className='header item'>
         {props.nickname || ''}
       </div>
@@ -17,7 +17,8 @@ const WalletMenu = (props) => (
       <div className='item'>
         <Button
           circular
-          color='red'
+          color='grey'
+          fluid
           onClick={props.onSignOutClick}
         >
           SignOut
