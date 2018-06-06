@@ -6,7 +6,7 @@ import currencies from '../common/currencies';
 import category from '../common/category';
 import years from '../common/years';
 import months from '../common/months';
-import { convertNumber } from '../utils/helper';
+import { convertNumber, convertToString } from '../utils/helper';
 
 class AddBudgetForm extends Component {
   state = { 
@@ -61,14 +61,14 @@ class AddBudgetForm extends Component {
           currency: '',
           year: '',
           month: '',
-          initBalance: ''
+          amount: ''
         }
       });
     }
   }
   
   handleInputChange = (event, data) => this.setState({
-    budget: { ...this.state.budget, [data.name]: data.value }
+    budget: { ...this.state.budget, [data.name]: data.name === 'amount' ? convertToString(data.value) : data.value }
   });
 
   render() {

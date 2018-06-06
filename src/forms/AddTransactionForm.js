@@ -7,7 +7,7 @@ import months from '../common/months';
 import days from '../common/days';
 import category from '../common/category';
 import types from '../common/types';
-import { convertNumber } from '../utils/helper';
+import { convertNumber, convertToString } from '../utils/helper';
 
 class AddTransactionForm extends Component {
   state = {
@@ -25,9 +25,11 @@ class AddTransactionForm extends Component {
     errors: {}
   };
   
-  handleInputChange = (event, data) => this.setState({
-    transaction: { ...this.state.transaction, [data.name]: data.value }
-  });
+  handleInputChange = (event, data) => {
+    this.setState({
+      transaction: { ...this.state.transaction, [data.name]: data.name === 'cost' ? convertToString(data.value) : data.value }
+    });
+  }
   
   validate = (data) => {
     const errors = {};

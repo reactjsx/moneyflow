@@ -149,3 +149,7 @@ export function getCurrentDate() {
 export function convertNumber(number) {
   return numeral(number).format(0,0);
 }
+
+export function convertToString(number) {
+  return numeral(number).value().toString();
+}

@@ -7,7 +7,7 @@ import months from '../common/months';
 import days from '../common/days';
 import category from '../common/category';
 import types from '../common/types';
-import { convertNumber } from '../utils/helper';
+import { convertNumber, convertToString } from '../utils/helper';
 
 class UpdateTransactionForm extends Component {
   state = { 
@@ -65,7 +65,7 @@ class UpdateTransactionForm extends Component {
   }
   
   handleInputChange = (event, data) => this.setState({
-    transaction: { ...this.state.transaction, [data.name]: data.value }
+    transaction: { ...this.state.transaction, [data.name]: data.name === 'cost' ? convertToString(data.value) : data.value }
   });
 
   render() {
