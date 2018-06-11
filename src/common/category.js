@@ -21,6 +21,10 @@ const category = {
       value: 'Transportation'
     },
     {
+      text: 'Outdoor/Social',
+      value: 'Outdoor/Social'
+    },
+    {
       text: 'Eating Out',
       value: 'Eating Out'
     },
