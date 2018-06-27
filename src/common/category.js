@@ -96,6 +96,10 @@ const category = {
     {
       text: 'Debt Pay',
       value: 'Debt Pay'
+    },
+    {
+      text: 'Others',
+      value: 'Others'
     }
   ],
   'Income': [
