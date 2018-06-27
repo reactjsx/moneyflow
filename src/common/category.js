@@ -13,6 +13,10 @@ const category = {
       value: 'Shopping'
     },
     {
+      text: 'Laundry',
+      value: 'Laundry'
+    },
+    {
       text: 'Commuter Pass',
       value: 'Commuter Pass'
     },
@@ -23,6 +27,10 @@ const category = {
     {
       text: 'Outdoor/Social',
       value: 'Outdoor/Social'
+    },
+    {
+      text: 'Travel',
+      value: 'Travel'
     },
     {
       text: 'Eating Out',
