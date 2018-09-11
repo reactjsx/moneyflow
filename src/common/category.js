@@ -25,6 +25,14 @@ const category = {
       value: 'Transportation'
     },
     {
+      text: 'Eating Out',
+      value: 'Eating Out'
+    },
+    {
+      text: 'Beverage',
+      value: 'Beverage'
+    },
+    {
       text: 'Outdoor/Social',
       value: 'Outdoor/Social'
     },
@@ -33,12 +41,8 @@ const category = {
       value: 'Travel'
     },
     {
-      text: 'Eating Out',
-      value: 'Eating Out'
-    },
-    {
-      text: 'Beverage',
-      value: 'Beverage'
+      text: 'Family',
+      value: 'Family'
     },
     {
       text: 'House Rent',
@@ -80,10 +84,13 @@ const category = {
       text: 'Air Ticket',
       value: 'Air Ticket'
     },
-
     {
       text: 'Education',
       value: 'Education'
+    },
+    {
+      text: 'Investment',
+      value: 'Investment'
     },
     {
       text: 'Allowance',

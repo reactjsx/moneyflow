@@ -121,7 +121,7 @@ class ReportPage extends Component {
               )).sort((a, b) => (b.day - a.day));
               thisWalletTransactions.forEach(t => {
                 if (t.type === 'Outcome') {
-                  if (t.category === 'Transfer To') return;
+                  if (t.category === 'Transfer To' || t.category === 'Investment') return;
                   totalSpent += t.cost;
                   if (typeof categoricalSpent[t.category] === 'undefined') {
                     categoricalSpentDailySpent[t.category] = Array.from({length: 31}, (v, k) => 0);
