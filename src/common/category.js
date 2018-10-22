@@ -123,6 +123,10 @@ const category = {
       value: 'Company Payback'
     },
     {
+      text: 'Payback from Thao',
+      value: 'Payback from Thao'
+    },
+    {
       text: 'Transfer From',
       value: 'Transfer From'
     },
