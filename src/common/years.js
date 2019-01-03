@@ -1,5 +1,13 @@
 const years = [
   {
+    text: '2020',
+    value: 2020,
+  },
+  {
+    text: '2019',
+    value: 2019,
+  },
+  {
     text: '2018',
     value: 2018,
   },
